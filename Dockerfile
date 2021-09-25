@@ -10,4 +10,4 @@ COPY requirements.txt conf /Sample-Projects/
 RUN pip install -r requirements.txt
 RUN gunicorn conf.wsgi
 
-COPY . /Sample-Projects/
+COPY . /Sample-Projects/ 

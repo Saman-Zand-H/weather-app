@@ -5,9 +5,10 @@ ENV PYTHONUNBUFFERED 1
 
 WORKDIR /Sample-Projects/
 
-COPY requirements.txt conf /Sample-Projects/
+COPY requirements.txt /Sample-Projects/
 
 RUN pip install -r requirements.txt
-RUN gunicorn conf.wsgi
 
-COPY . /Sample-Projects/ 
+COPY . /Sample-Projects/
+
+ENTRYPOINT [ "./gunicorn.sh" ]

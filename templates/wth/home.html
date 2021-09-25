@@ -1,0 +1,236 @@
+{% extends '_base.html' %} 
+
+{% load static %} 
+{% load custom_tags %} 
+
+{% block content %}
+<div class="hero" data-bg-image="{% static 'images/banner.jpg' %}">
+    <div class="container">
+        <form action="{% url 'wth:home' %}" method="POST" class="find-location">
+            {% csrf_token %}
+            <input
+                type="text"
+                name="location"
+                placeholder="Find your location..."
+            />
+            <input type="submit" value="Find" />
+        </form>
+    </div>
+</div>
+<div class="forecast-table">
+    <div class="container">
+        <div class="forecast-container">
+            <div class="today forecast">
+                <div class="forecast-header">
+                    <div class="day">{{ date|date:"l" }}</div>
+                    <div class="date">{{ date|date:"j M" }}</div>
+                </div>
+                <!-- .forecast-header -->
+                <div class="forecast-content">
+                    <!-- Button trigger modal -->
+                    <button
+                    type="button"
+                    class="btn btn-dark shadow shadow-3 mb-2"
+                    style="margin-top: -1rem;"
+                    data-mdb-toggle="modal"
+                    data-mdb-target="#staticBackdrop"
+                    >
+                        <i class="fas fa-info fa-lg"></i>
+                    </button>
+
+                    <!-- Modal -->
+                    <div
+                    class="modal fade"
+                    id="staticBackdrop"
+                    data-mdb-keyboard="false"
+                    tabindex="-1"
+                    aria-hidden="true"
+                    >
+                        <div class="modal-dialog modal-dialog-scrollable modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="staticBackdropLabel">Hourly</h5>
+                                    <button
+                                    type="button"
+                                    class="btn-close"
+                                    data-mdb-dismiss="modal"
+                                    aria-label="Close"
+                                    ></button>
+                                </div>
+                                <div class="modal-body">
+                                    <table class="table table-dark table-striped">
+                                        <thead>
+                                            <tr>
+                                                <td>Time</td>
+                                                <td>Weather</td>
+                                                <td>Temperature</td>
+                                                <td>Wind Speed</td>
+                                                <td>Wind Direction</td>
+                                            </tr>
+                                        </thead>
+                                        {% for hour, cont in hourly.items %}
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        {% with time=cont|get_item:"time" %} 
+                                                            {{ time|date:"H" }}:00
+                                                        {% endwith %}
+                                                    </td>
+                                                    <td>
+                                                        {% with cont_icon=cont|get_item:'icon' %}
+                                                            <img
+                                                                src="{% static 'images/icons/'|add:cont_icon %}"
+                                                                alt=""
+                                                                width="20"
+                                                            />
+                                                        {% endwith %}
+                                                    </td>
+                                                    <td>
+                                                        {% with c_temp=cont|get_item:"temp" %} 
+                                                            {{ c_temp }}<sup>o</sup>{% if unit == "metric" %}C{% else %}F{% endif %}
+                                                        {% endwith %}
+                                                    </td>
+                                                    <td>
+                                                        {% with h_wind_s=cont|get_item:"wind_speed" %} 
+                                                            {{ h_wind_s }}km/h
+                                                        {% endwith %}
+                                                    </td>
+                                                    <td>
+                                                        {% with h_wind_dir=cont|get_item:"wind_dir" %} 
+                                                            {{ h_wind_dir }}
+                                                        {% endwith %}
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        {% endfor %}
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="location">
+                        {{ current|get_item:"location" }}
+                    </div>
+                    <div class="degree">
+                        <div class="num">
+                            {{ current|get_item:"temp" }}<sup>o</sup>{% if unit == "metric" %}C{% else %}F{% endif %}
+                        </div>
+                        <div class="forecast-icon">
+                            {% with current_item=current|get_item:'icon' %}
+                                <img
+                                    src="{% static 'images/icons/'|add:current_item %}"
+                                    alt=""
+                                    width="90"
+                                />
+                            {% endwith %}
+                        </div>
+                    </div>
+                    <span
+                        ><img
+                            src="{% static 'images/icon-umberella.png' %}"
+                            alt=""
+                        />{{ current|get_item:"humidity" }}%</span
+                    >
+                    <span
+                        ><img
+                            src="{% static 'images/icon-wind.png' %}"
+                            alt=""
+                        />{{ current|get_item:"wind_s" }}km/h</span
+                    >
+                    <span
+                        ><img
+                            src="{% static 'images/icon-compass.png' %}"
+                            alt=""
+                        />{{ current|get_item:"wind_dir" }}</span
+                    >
+                </div>
+            </div>
+            {% for day, cont in daily.items %}
+            <div class="forecast">
+                <div class="forecast-header">
+                    {% with t_delt=cont|get_item:"time_delta" %} 
+                        {% with added_days=t_delt|add_days:date %}
+                            <div class="day">{{ added_days|date:"l" }}</div>
+                        {% endwith %}
+                    {% endwith %}
+                </div>
+                <!-- .forecast-header -->
+                <div class="forecast-content">
+                    <div class="forecast-icon">
+                        {% with cont_icon=cont|get_item:'icon' %}
+                            <img
+                                src="{% static 'images/icons/'|add:cont_icon %}"
+                                alt=""
+                                width="48"
+                            />
+                        {% endwith %}
+                    </div>
+                    <div class="degree">
+                        {{ cont|get_item:"max" }}<sup>o</sup>{% if unit == "metric" %}C{% else %}F{% endif %}
+                    </div>
+                    <small>{{ cont|get_item:"min" }}<sup>o</sup></small>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<main class="main-content">
+    <div class="fullwidth-block">
+        <div class="container">
+            <div class="row">
+                <h2 class="section-title">Application features</h2>
+                <div class="col-md-6">
+                    <ul class="arrow-feature">
+                        <li>
+                            <h3>Authentication System</h3>
+                            <p>
+                                The ability to login/signup, using oAuth, having a profile picture, and a CAPTCHA test.
+                            </p>
+                        </li>
+                        <li>
+                            <h3>Daily Weather</h3>
+                            <p>
+                                You can get daily weather, which is implemented using OpenWeatherMap API<br>
+                                It's worth pointing out that I used OneTime API call, which requires lat and lon 
+                                instead of location. The conversion is done using a geocode api by <a href="https://rapidapi.com">RapidAPI</a>.
+                            </p>
+                        </li>
+                        <li>
+                            <h3>Hourly Weather</h3>
+                            <p>
+                                You can get daily weather, which is implemented using OpenWeatherMap API 
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <ul class="arrow-feature">
+                        <li>
+                            <h3>Relational Database</h3>
+                            <p>
+                                A complete relational database is implemented. You can see the code through my github.
+                            </p>
+                        </li>
+                        <li>
+                            <h3>Data Validation</h3>
+                            <p>
+                                When you enter a city, the app first checks if such a city exists or not. If it does, the it can enter the database 
+                            </p>
+                        </li>
+                        <li>
+                            <h3>Easy to Use</h3>
+                            <p>
+                                when you click on your username, you can choose your preferences. When you click on the info button 
+                                over the weather condition, you get the hourly weather.
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<!-- .main-content -->
+{% endblock %}
+

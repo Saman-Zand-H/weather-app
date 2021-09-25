@@ -1,0 +1,25 @@
+version: "3.9"
+
+services:
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    environment:
+      - "DEBUG=1"
+      - "ENVIRONMENT=development"
+    ports:
+      - 8000:8000
+    volumes: 
+      - .:/Practice-Projects
+    depends_on:
+      - db
+  db:
+    image: postgres:13
+    volumes: 
+      - postgres_data:/var/lib/postgresql/data/
+    environment: 
+      - "POSTGRES_USER=${POSTGRES_USER}"
+      - "POSTGRES_PASSWORD=${POSTGRES_PASSWORD}"
+
+volumes:
+  postgres_data:

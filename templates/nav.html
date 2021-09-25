@@ -1,0 +1,124 @@
+{% load static %}
+
+<div class="site-header">
+    <div class="container">
+        <a href="{% url 'wth:home' %}" class="branding">
+            <img src="{% static 'images/raw-logo.png' %}" width="140" height="140" style="margin: -4rem;" alt="" class="logo">
+            <div class="logo-type">
+                <h1 class="site-title">Django Solutions</h1>
+                <small class="site-description">Django always has a solution</small>
+            </div>
+        </a>
+
+        <!-- Default snippet for navigation -->
+        <div class="main-navigation mt-1">
+            <button type="button" class="menu-toggle"><i class="fa fa-bars"></i></button>
+            <!-- Menu -->
+            <ul class="menu">
+                <li class="menu-item current-menu-item"><a href="{% url 'wth:home' %}">Home</a></li>
+                <li class="menu-item"><a href="{% url 'wth:contact' %}">Contact</a></li>
+                {% if user.is_authenticated %}
+                <li class="menu-item"><a href="{% url 'account_logout' %}">Log Out</a></li>
+                <li class="menu-item">
+                    <!-- Button trigger modal -->
+                    <a
+                    type="button"
+                    data-mdb-toggle="modal"
+                    data-mdb-target="#exampleModal"
+                    >
+                    {% if user.image %}
+                            <img src="{{ user.image.url }}" class="img-fluid rounded-circle mx-2" width="35">
+                        {% else %}
+                            <img src="{% static 'images/empty.jpg' %}" class="img-fluid rounded-circle mx-2" width="35">
+                        {% endif %}
+                        Welcome, {{ user.username }}
+                    </a>
+
+                    <!-- Modal -->
+                    <div
+                    class="modal fade"
+                    id="exampleModal"
+                    tabindex="-1"
+                    aria-labelledby="exampleModalLabel"
+                    aria-hidden="true"
+                    >
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header text-dark">
+                                    <h1 class="modal-title" id="exampleModalLabel">Preferences</h1>
+                                    <button
+                                    type="button"
+                                    class="btn-close"
+                                    data-mdb-dismiss="modal"
+                                    aria-label="Close"
+                                    ></button>
+                                </div>
+                                <div class="modal-body">
+                                    <!-- Set Unit Form -->
+                                    <h2 class="text-dark">Unit</h2>
+                                    <form action="{% url 'wth:unit' %}" method="POST" class="form-outline" id="unitForm">
+                                        {% csrf_token %}
+                                        <div class="form-floating">
+                                            <select class="form-select" name="unit" id="Unit" aria-label="Unit">
+                                                <option value="MET" selected>Metric</option>
+                                                <option value="IMP">Imperial</option>
+                                            </select>
+                                            <label for="Unit"><b>Unit</b></label>
+                                        </div>
+                                        <a type="button" class="mt-3" onclick="$('#unitForm').submit()">Set unit</a>
+                                    </form>
+                                    {% if c_count > 1 %}
+                                        <!-- Set Default City Form -->
+                                        <hr>
+                                        <h2 class="text-dark">Default City</h2>
+                                        <form action="{% url 'wth:set-city' %}" method="POST" class="form-outline" id="defForm">
+                                            {% csrf_token %}
+                                            <div class="form-floating">
+                                                <select class="form-select" name="default_city" id="DefaultCity">
+                                                    {% for city in cities %}
+                                                        <option value="{{ city }}">{{ city.city }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                                <label for="DefaultCity"><b>Cities</b></label>
+                                            </div>
+                                            <a type="button" class="mt-3" onclick="$('#defForm').submit()">Set default</a>
+                                        </form>
+                                    {% endif %}
+                                    {% if c_count > 1 %}
+                                        <!-- Remove City Form -->
+                                        <hr>
+                                        <h2 class="text-dark">Remove City</h2>
+                                        <form action="{% url 'wth:remove-city' %}" method="POST" class="form-outline" id="rmForm">
+                                            {% csrf_token %}
+                                            <div class="form-floating">
+                                                <select class="form-select" name="city" id="remCity">
+                                                    {% for city in cities %}
+                                                        <option value="{{ city }}">{{ city.city }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                                <label for="remCity"><b>Cities</b></label>
+                                            </div>
+                                            <a type="button" class="mt-3" onclick="$('#rmForm').submit()">Remove city</a>
+                                        </form>
+                                    {% endif %}
+                                </div>
+                                <div class="modal-footer">
+                                    <a type="button" class="border-dark text-dark" data-mdb-dismiss="modal">Close</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                {% else %}
+                <li class="menu-item"><a href="{% url 'account_login' %}">Log In</a></li>
+                <li class="menu-item"><a href="{% url 'account_signup' %}">Sign Up</a></li>
+                {% endif %}
+            </ul>
+            <!-- Menu -->
+        </div>
+        <!-- Main-Navigation -->
+
+        <div class="mobile-navigation"></div>
+
+    </div>
+</div>

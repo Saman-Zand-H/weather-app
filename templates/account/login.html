@@ -1,0 +1,56 @@
+{% extends "_base.html" %} 
+
+{% load account socialaccount %} 
+{% load crispy_forms_tags %}
+
+{% block title %}Sign In{% endblock %} 
+
+{% load socialaccount %}
+
+{% block content %}
+
+<main class="my-4">
+  <div class="bg-dark p-4 text-light" style="height: 29rem;">
+    <h1>Sign In</h1>
+
+    <p>If you've forgotten your password please sign up again. 
+    Please sign in with one of your existing third party accounts. 
+    Or, <a href="{{ signup_url }}">sign up</a> for a {{ site.name }} account and sign in below:</p>
+
+
+    <p>If you have not created an account yet, then please
+      <a href="{{ signup_url }}">sign up</a> first.
+    </p>
+
+    <div class="d-grid grid-3">
+      <form class="login" method="POST" action="{% url 'account_login' %}">
+        {% csrf_token %}
+        {{ form|crispy }}
+        {% if redirect_field_value %}
+        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+        {% endif %}
+        <button class="mt-2" type="submit">Sign In</button><br>
+        <div class="text-center">
+          <hr>
+          <h3>Or use</h3>
+          <div class="col-md-6">
+            <div class="row">
+              <a href="{% provider_login_url 'google' %}">
+                <button class="btn btn-light container-fluid"><i class="fab fa-google"></i>&nbsp;Google</button>
+              </a>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="row">
+              <a href="{% provider_login_url 'github' %}">
+                <button class="btn btn-light container-fluid"><i class="fab fa-github"></i>&nbsp;Github</button>
+              </a>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</main>
+
+{% endblock %}

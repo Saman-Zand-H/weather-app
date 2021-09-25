@@ -1,0 +1,81 @@
+{% extends '_base.html' %} 
+
+{% load static %} 
+
+{% block content %}
+<main class="main-content">
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="{% url 'wth:home' %}">Home</a>
+            <span>Contact</span>
+        </div>
+    </div>
+
+    <div class="fullwidth-block">
+        <div class="container">
+            <div class="col-md-5">
+                <div class="contact-details">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d205798.9648693129!2d59.439373642133006!3d36.297540245757105!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3f6c911abe4131d7%3A0xc9c57e3a9318753b!2sMashhad%2C%20Razavi%20Khorasan%20Province%2C%20Iran!5e0!3m2!1sen!2ssi!4v1632417732728!5m2!1sen!2ssi" 
+                    height="220"
+                    allowfullscreen="" 
+                    loading="lazy"
+                    class="container-fluid pt-3"
+                    ></iframe>
+                    <div class="contact-info">
+                        <address>
+                            <img
+                                src="{% static 'images/icon-marker.png' %}"
+                                alt="Address"
+                            />
+                            <p>
+                                Django Solutions<br />
+                                Iran, Khorasan-Razavi Province, Mashhad
+                            </p>
+                        </address>
+
+                        <a href="#"
+                            ><img
+                                src="{% static 'images/icon-phone.png' %}"
+                                alt=""
+                            />+98 922 676 1449</a
+                        >
+                        <a href="#"
+                            ><img
+                                src="{% static 'images/icon-envelope.png' %}"
+                                alt=""
+                            />tnsperuse@gmail.com</a
+                        >
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-md-offset-1 mt-3">
+                <h2 class="section-title">Contact us</h2>
+                <p>
+                    Hello. My name's Saman and I'm a django developer and this
+                    is one of my sample projects.
+                </p>
+                <form action="{% url 'wth:contact' %}" method="POST" class="contact-form">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-6">
+                            <input
+                                type="text"
+                                name="name"
+                                placeholder="Your name..."
+                            />
+                        </div>
+                    </div>
+                    <textarea
+                        name="message"
+                        placeholder="Message..."
+                    ></textarea>
+                    <div class="text-right">
+                        <input type="submit" placeholder="Send message" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+<!-- .main-content -->
+{% endblock %}

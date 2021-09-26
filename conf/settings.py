@@ -201,4 +201,4 @@ django_heroku.settings(locals())
 
 # handlers environmental variables
 WEATHER_API_KEY = env("wth_api_key")
-WEATHER_API_KEY = env("x-rapidapi-key")
+X_rAPIDAPI_KEY = env("x-rapidapi-key")

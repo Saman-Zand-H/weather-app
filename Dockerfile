@@ -11,4 +11,4 @@ RUN pip install -r requirements.txt
 
 COPY . /Sample-Projects/
 
-ENTRYPOINT [ "./gunicorn.sh" ]
+CMD gunicorn conf.wsgi:application -b 0.0.0.0:$PORT

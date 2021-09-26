@@ -8,7 +8,8 @@ from datetime import datetime
 
 from .models import *
 
-env = os.environ
+env = Env()
+env.read_env()
 
 
 def deg_to_dir(deg, *args, **kwargs):
@@ -49,7 +50,7 @@ def identify_icon_code(icon_name, *args, **kwargs):
 
 
 def check_location_exstiance(location, *args, **kwargs):
-    api_key = env.get("wth_api_key")
+    api_key = env.str("wth_api_key")
     url = f"https://api.openweathermap.org/data/2.5/weather?q={location}&appid={api_key}"
     wth = requests.get(url).json()
     return wth
@@ -64,8 +65,8 @@ def geocode_forward_api_req(location):
         "polygon_threshold": "0.0",
     }
     headers = {
-        'x-rapidapi-host': env.get("x-rapidapi-host"),
-        'x-rapidapi-key': env.get("x-rapidapi-key"),
+        'x-rapidapi-host': "forward-reverse-geocoding.p.rapidapi.com",
+        'x-rapidapi-key': env("x-rapidapi-key"),
     }
     resp_api = requests.get(url, headers=headers, params=querystring).json()
     return resp_api
@@ -73,7 +74,7 @@ def geocode_forward_api_req(location):
 
 def wth_api_req(lon, lat, unit):
     print(unit)
-    api_key = env.get("wth_api_key")
+    api_key = env.str("wth_api_key")
     url = (f"https://api.openweathermap.org/data/2.5/onecall?lat={lat}&lon={lon}"
            f"&exclude=alerts,minutely&units={unit}&appid={api_key}")
     resp_api = requests.get(url).json()

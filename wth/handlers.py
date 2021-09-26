@@ -8,7 +8,7 @@ from datetime import datetime
 
 from .models import *
 
-env = os.environs
+env = os.environ
 
 
 def deg_to_dir(deg, *args, **kwargs):

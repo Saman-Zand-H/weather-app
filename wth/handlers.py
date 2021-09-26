@@ -68,8 +68,8 @@ def geocode_forward_api_req(location):
         "polygon_threshold": "0.0",
     }
     headers = {
-        'x-rapidapi-host': env.str("x-rapidapi-host"),
-        'x-rapidapi-key': env.str("x-rapidapi-key"),
+        'x-rapidapi-host': env("x-rapidapi-host"),
+        'x-rapidapi-key': env("x-rapidapi-key"),
     }
     resp_api = requests.get(url, headers=headers, params=querystring).json()
     return resp_api

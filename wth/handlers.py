@@ -1,6 +1,6 @@
 from django.core.exceptions import ObjectDoesNotExist
 
-import os
+from environs import Env
 import re
 import requests
 from datetime import timedelta

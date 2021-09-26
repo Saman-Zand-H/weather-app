@@ -200,5 +200,5 @@ ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
 django_heroku.settings(locals())
 
 # handlers environmental variables
-WEATHER_API_KEY = env("wth_api_key")
-X_RAPIDAPI_KEY = env("x-rapidapi-key")
+WEATHER_API_KEY = env.str("wth_api_key")
+X_RAPIDAPI_KEY = env.str("x-rapidapi-key")

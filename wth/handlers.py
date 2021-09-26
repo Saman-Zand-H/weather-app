@@ -1,15 +1,13 @@
-from django.core.exceptions import ObjectDoesNotExist
 
-from environs import Env
+from django.core.exceptions import ObjectDoesNotExist
+from django.conf import settings
+
 import re
 import requests
 from datetime import timedelta
 from datetime import datetime
 
 from .models import *
-
-env = Env()
-env.read_env()
 
 
 def deg_to_dir(deg, *args, **kwargs):
@@ -50,7 +48,7 @@ def identify_icon_code(icon_name, *args, **kwargs):
 
 
 def check_location_exstiance(location, *args, **kwargs):
-    api_key = env.str("wth_api_key")
+    api_key = settings.WEATHER_API_KEY
     url = f"https://api.openweathermap.org/data/2.5/weather?q={location}&appid={api_key}"
     wth = requests.get(url).json()
     return wth
@@ -66,7 +64,7 @@ def geocode_forward_api_req(location):
     }
     headers = {
         'x-rapidapi-host': "forward-reverse-geocoding.p.rapidapi.com",
-        'x-rapidapi-key': env("x-rapidapi-key"),
+        'x-rapidapi-key': settings.X_RAPIDAPI_KEY,
     }
     resp_api = requests.get(url, headers=headers, params=querystring).json()
     return resp_api
@@ -74,7 +72,7 @@ def geocode_forward_api_req(location):
 
 def wth_api_req(lon, lat, unit):
     print(unit)
-    api_key = env.str("wth_api_key")
+    api_key = settings.WEATHER_API_KEY
     url = (f"https://api.openweathermap.org/data/2.5/onecall?lat={lat}&lon={lon}"
            f"&exclude=alerts,minutely&units={unit}&appid={api_key}")
     resp_api = requests.get(url).json()

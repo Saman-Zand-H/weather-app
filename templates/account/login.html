@@ -30,25 +30,25 @@
         <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
         {% endif %}
         <button class="mt-2" type="submit">Sign In</button><br>
-        <div class="text-center">
-          <hr>
-          <h3>Or use</h3>
-          <div class="col-md-6">
-            <div class="row">
-              <a href="{% provider_login_url 'google' %}">
-                <button class="btn btn-light container-fluid"><i class="fab fa-google"></i>&nbsp;Google</button>
-              </a>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="row">
-              <a href="{% provider_login_url 'github' %}">
-                <button class="btn btn-light container-fluid"><i class="fab fa-github"></i>&nbsp;Github</button>
-              </a>
-            </div>
+      </form>
+      <div class="text-center">
+        <hr>
+        <h3>Or use</h3>
+        <div class="col-md-6">
+          <div class="row">
+            <a href="{% provider_login_url 'google' %}">
+              <button class="btn btn-light container-fluid"><i class="fab fa-google"></i>&nbsp;Google</button>
+            </a>
           </div>
         </div>
-      </form>
+        <div class="col-md-6">
+          <div class="row">
+            <a href="{% provider_login_url 'github' %}">
+              <button class="btn btn-light container-fluid"><i class="fab fa-github"></i>&nbsp;Github</button>
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </main>
